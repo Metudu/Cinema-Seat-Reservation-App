@@ -4,6 +4,8 @@ row = [0,0,10,10]
 column = [5,4,5,4]
 empty_seats = [100,100,100,100]
 increse = [-1,-1]
+discount_rate_definer = []
+max_ticket_and_prices = []
 
 def clear():
     os.system("cls||clear")    
@@ -28,6 +30,7 @@ def main_menu(): # Main menu bu fonksiyonla çağırılacak ve kullanıcının s
     return selection
 
 def make_reservation(cinema_seats):
+    discount_calculated = False
     clear()
     print("You chose option 1")
     print("-"*20)
@@ -38,15 +41,19 @@ def make_reservation(cinema_seats):
         seat_category = int(input("Enter the seat category you want: "))    
 
     ticket_count = int(input("Enter the ticket count: "))
-    while not  1<= ticket_count <= 40:
+    while not  1<= ticket_count <= int(max_ticket_and_prices[0][1]):
         print("Invalid option. Please try again.")
         ticket_count = int(input("Enter the seat category you want: "))    
 
     if seat_category == 1:
         while True:
-            if not ticket_count:
+            if not discount_calculated:
                 clear()
+                calculate_discount_rate(seat_category, ticket_count)
+                discount_calculated = True
+            if not ticket_count:
                 print("You made the reservation successfully!")
+                discount_calculated = False
                 break
 
             if not empty_seats[0]:
@@ -69,9 +76,13 @@ def make_reservation(cinema_seats):
 
     if seat_category == 3:
         while True:
-            if not ticket_count:
+            if not discount_calculated:
                 clear()
+                calculate_discount_rate(seat_category, ticket_count)
+                discount_calculated = True
+            if not ticket_count:
                 print("You made the reservation successfully!")
+                discount_rate_definer = False
                 break
 
             if not empty_seats[2]:
@@ -94,9 +105,13 @@ def make_reservation(cinema_seats):
     
     if seat_category == 2:
         while True:
-            if not ticket_count:
+            if not discount_calculated:
                 clear()
+                calculate_discount_rate(seat_category, ticket_count)
+                discount_calculated = True
+            if not ticket_count:
                 print("You made the reservation successfully!")
+                discount_calculated = False
                 break
             if not empty_seats[1]:
                 clear()
@@ -124,9 +139,13 @@ def make_reservation(cinema_seats):
 
     if seat_category == 4:
         while True:
-            if not ticket_count:
+            if not discount_calculated:
                 clear()
+                calculate_discount_rate(seat_category, ticket_count)
+                discount_calculated = True
+            if not ticket_count:
                 print("You made the reservation successfully!")
+                discount_calculated = False
                 break
             if not empty_seats[3]:
                 clear()
@@ -153,6 +172,23 @@ def make_reservation(cinema_seats):
                 empty_seats[3] -= 1
 
 
+def define_discount_rate():
+    with open("discount.txt") as file:
+        for line in file:
+            if len(temp := line.rstrip().split("-")) == 2:
+                max_ticket_and_prices.append([temp[0],temp[1]])
+            if len(temp := line.rstrip().split("-")) == 4:
+                if temp[2] == max_ticket_and_prices[0][0]:
+                    temp[2] = max_ticket_and_prices[0][1]
+                discount_rate_definer.append([temp[0],temp[1],temp[2],temp[3]])
+
+
+def calculate_discount_rate(seat_category,ticket_count):
+    user_input = [str(seat_category),ticket_count]
+    for option in discount_rate_definer:
+        if option[0] == user_input[0] and int(option[1]) < ticket_count <= int(option[2]):
+            print(f"You have %{option[3]} discount! The cost is: {max_ticket_and_prices[seat_category][1]} - ({max_ticket_and_prices[seat_category][1]} * ({option[3]} / 100)) = {int(max_ticket_and_prices[seat_category][1])-(int(max_ticket_and_prices[seat_category][1]) * (int(option[3]) / 100))}")
+             
 
 def print_seats(cinema_seats):
     clear()

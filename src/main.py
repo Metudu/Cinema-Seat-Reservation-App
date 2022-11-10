@@ -1,4 +1,4 @@
-from functions import clear,main_menu, make_reservation,print_seats,restart
+from functions import clear,main_menu, make_reservation,print_seats,restart,define_discount_rate
 
 clear()
 cinema_seats = [
@@ -24,8 +24,8 @@ cinema_seats = [
     ["-"] * 20,
 ]
 
-print("CINEMA RESEVATION APPLICATION".center(41,"-"))
-
+print("CINEMA RESERVATION APPLICATION".center(41,"-"))
+define_discount_rate()
 selection = main_menu()
 while selection:
 
