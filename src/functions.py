@@ -43,7 +43,7 @@ def make_reservation(cinema_seats):     # Reservasyon yapmak için yazılmış f
     ticket_count = int(input("Enter the ticket count: "))               # Kullanıcıdan reservasyon yapılmak istenen koltuk sayısı alınır
     while not  1<= ticket_count <= int(max_ticket_and_prices[0][1]):    # Kullanıcı eğer istenmeyen bit değer girerse istenen değer girene kadar devam eder    
         print("Invalid option. Please try again.")
-        ticket_count = int(input("Enter the seat category you want: "))    
+        ticket_count = int(input("Enter the ticket count you want: "))    
 
     # Buradan sonraki while döngülerinin çalışma mantığı şöyledir:
     # Tüm Kategoriler:
