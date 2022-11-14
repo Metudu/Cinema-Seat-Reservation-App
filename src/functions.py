@@ -6,6 +6,7 @@ empty_seats = [100,100,100,100] # Sırasıyla 1. 2. 3. ve 4. kategorilerde boş 
 increse = [-1,-1]               # 2. ve 4. kategorilerde koltuğun sağa veya sola gitmesini düzenler
 discount_rate_definer = []      # Kategorileri ve bilet sayısına bağlı olarak indirim oranlarını tutar
 max_ticket_and_prices = []      # İlk olarak maks bilet sayısını sonrasında da her kategorinin ücretinin ne kadar olduğunu tutar
+total_endorsement = [0,0,0,0,0] # Sırasıyla 1. 2. 3. ve 4. kategoriler için ciro değerlerini tutar ve son indexi toplam ciroyu verir
 
                                         
 def clear():                    # Terminali temizlemek için çağırılır
@@ -13,6 +14,7 @@ def clear():                    # Terminali temizlemek için çağırılır
 
 def main_menu():                # Main menu bu fonksiyonla çağırılacak ve kullanıcının seçtiği değer döndürülecektir
     print("".center(41,"#"))
+    print(f"Total cost: [{total_endorsement[0]} | {total_endorsement[1]} | {total_endorsement[2]} | {total_endorsement[3]} | {total_endorsement[4]}]")
     print("1 - Make reservation")
     print("2 - Show Seats")
     print("3 - Restart")
@@ -227,11 +229,25 @@ def calculate_discount_rate(seat_category,ticket_count):
     # Text dosyasına yazılan değerlerin okunduğu ve atandığı listeden(discount_rate_definer) listeleri çeker ve sırasıyla kategoriyi ve girilen 
     # bilet sayısının aralığına bakar. Buna göre listeden indirim oranını çeker ve kullanıcıya yazdırır. Ayrıca seçilen koltuk kategorisinin ücretine
     # indirim oranını uygular ve toplam tutarı ekrana yazdırarak kullanıcıyı bilgilendirir.
+    # Oluşan ciroyu ciroyu tutan listeye atar ve toplama işlemi gerçekleştirir.
+
+    have_discount = False
 
     for option in discount_rate_definer:
-        if option[0] == str(seat_category) and int(option[1]) < ticket_count <= int(option[2]):
-            print(f"You have %{option[3]} discount! The cost is: {max_ticket_and_prices[seat_category][1]} - ({max_ticket_and_prices[seat_category][1]} * ({option[3]} / 100)) = {int(max_ticket_and_prices[seat_category][1])-(int(max_ticket_and_prices[seat_category][1]) * (int(option[3]) / 100))}")
-             
+        if option[0] == str(seat_category) and int(option[1]) <= ticket_count <= int(option[2]):
+            cost = (int(max_ticket_and_prices[seat_category][1])-(int(max_ticket_and_prices[seat_category][1]) * (int(option[3]) / 100))) * ticket_count
+            print(f"You have %{option[3]} discount! The cost is: ({max_ticket_and_prices[seat_category][1]} - ({max_ticket_and_prices[seat_category][1]} * ({option[3]} / 100))) * {ticket_count} = {cost}")
+            total_endorsement[seat_category-1] += cost
+            total_endorsement[4] += cost
+            have_discount = True
+            break
+    
+    if not have_discount:
+        cost = int(max_ticket_and_prices[seat_category][1]) * ticket_count
+        print(f"The cost is: {cost}")
+        total_endorsement[seat_category-1] += cost
+        total_endorsement[4] += cost
+
 
 def print_seats(cinema_seats):  #Dolu(X) veya boş(-) olduğu bilgisini kullanarak ekrana koltukları yazdırır. 
     clear()
