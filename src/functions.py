@@ -42,10 +42,10 @@ def make_reservation(cinema_seats):     # Reservasyon yapmak için yazılmış f
         print("Invalid option. Please try again.")
         seat_category = int(input("Enter the seat category you want: "))    
 
-    ticket_count = int(input("Enter the ticket count: "))               # Kullanıcıdan reservasyon yapılmak istenen koltuk sayısı alınır
-    while not  1<= ticket_count <= int(max_ticket_and_prices[0][1]):    # Kullanıcı eğer istenmeyen bit değer girerse istenen değer girene kadar devam eder    
+    ticket_amount = int(input("Enter the amount of ticket you want: "))               # Kullanıcıdan reservasyon yapılmak istenen koltuk sayısı alınır
+    while not  1<= ticket_amount <= int(max_ticket_and_prices[0][1]):    # Kullanıcı eğer istenmeyen bit değer girerse istenen değer girene kadar devam eder    
         print("Invalid option. Please try again.")
-        ticket_count = int(input("Enter the ticket count you want: "))    
+        ticket_amount = int(input("Enter the amount of ticket you want: "))    
 
     # Buradan sonraki while döngülerinin çalışma mantığı şöyledir:
     # Tüm Kategoriler:
@@ -72,16 +72,16 @@ def make_reservation(cinema_seats):     # Reservasyon yapmak için yazılmış f
         while True:
             if not discount_calculated:
                 clear()
-                calculate_discount_rate(seat_category, ticket_count)
+                calculate_discount_rate(seat_category, ticket_amount)
                 discount_calculated = True
-            if not ticket_count:
+            if not ticket_amount:
                 print("You made the reservation successfully!")
                 discount_calculated = False
                 break
 
-            if not empty_seats[0]:
+            if not empty_seats[0] or ticket_amount > empty_seats[0]:
                 clear()
-                print("There is no empty seats in this category. Please try another one.")
+                print("There is no empty seats in this category or your amount of ticket is too high. Please try another one.")
                 break
 
             if column[0] > 13:
@@ -94,23 +94,23 @@ def make_reservation(cinema_seats):     # Reservasyon yapmak için yazılmış f
 
             if cinema_seats[row[0]][column[0]] == "-":
                 cinema_seats[row[0]][column[0]] = "X"
-                ticket_count -= 1
+                ticket_amount -= 1
                 empty_seats[0] -= 1
 
     if seat_category == 3:
         while True:
             if not discount_calculated:
                 clear()
-                calculate_discount_rate(seat_category, ticket_count)
+                calculate_discount_rate(seat_category, ticket_amount)
                 discount_calculated = True
-            if not ticket_count:
+            if not ticket_amount:
                 print("You made the reservation successfully!")
                 discount_rate_definer = False
                 break
 
-            if not empty_seats[2]:
+            if not empty_seats[2] or ticket_amount > empty_seats[2]:
                 clear()
-                print("There is no empty seats in this category. Please try another one.")
+                print("There is no empty seats in this category or your amount of ticket is too high. Please try another one.")
                 break
 
             if column[2] > 13:
@@ -123,22 +123,22 @@ def make_reservation(cinema_seats):     # Reservasyon yapmak için yazılmış f
 
             if cinema_seats[row[2]][column[2]] == "-":
                 cinema_seats[row[2]][column[2]] = "X"
-                ticket_count -= 1
+                ticket_amount -= 1
                 empty_seats[2] -= 1
     
     if seat_category == 2:
         while True:
             if not discount_calculated:
                 clear()
-                calculate_discount_rate(seat_category, ticket_count)
+                calculate_discount_rate(seat_category, ticket_amount)
                 discount_calculated = True
-            if not ticket_count:
+            if not ticket_amount:
                 print("You made the reservation successfully!")
                 discount_calculated = False
                 break
-            if not empty_seats[1]:
+            if not empty_seats[1] or ticket_amount > empty_seats[1]:
                 clear()
-                print("There is no empty seats in this category. Please try another one.")
+                print("There is no empty seats in this category or your amount of ticket is too high. Please try another one.")
                 break
 
             if column[1] == 0:
@@ -157,22 +157,22 @@ def make_reservation(cinema_seats):     # Reservasyon yapmak için yazılmış f
             
             if cinema_seats[row[1]][column[1]] == "-":
                 cinema_seats[row[1]][column[1]] = "X"
-                ticket_count -= 1
+                ticket_amount -= 1
                 empty_seats[1] -= 1
 
     if seat_category == 4:
         while True:
             if not discount_calculated:
                 clear()
-                calculate_discount_rate(seat_category, ticket_count)
+                calculate_discount_rate(seat_category, ticket_amount)
                 discount_calculated = True
-            if not ticket_count:
+            if not ticket_amount:
                 print("You made the reservation successfully!")
                 discount_calculated = False
                 break
-            if not empty_seats[3]:
+            if not empty_seats[3] or ticket_amount > empty_seats[3]:
                 clear()
-                print("There is no empty seats in this category. Please try another one.")
+                print("There is no empty seats in this category or your amount of ticket is too high. Please try another one.")
                 break
 
             if column[3] == 0:
@@ -191,7 +191,7 @@ def make_reservation(cinema_seats):     # Reservasyon yapmak için yazılmış f
             
             if cinema_seats[row[3]][column[3]] == "-":
                 cinema_seats[row[3]][column[3]] = "X"
-                ticket_count -= 1
+                ticket_amount -= 1
                 empty_seats[3] -= 1
 
 
@@ -223,7 +223,7 @@ def define_discount_rate():
                 discount_rate_definer.append([temp[0],temp[1],temp[2],temp[3]])
 
 
-def calculate_discount_rate(seat_category,ticket_count):
+def calculate_discount_rate(seat_category,ticket_amount):
 
     # Parametre olarak atanılan koltuk kategorisi ve bilet sayısına göre indirimi belirler.
     # Text dosyasına yazılan değerlerin okunduğu ve atandığı listeden(discount_rate_definer) listeleri çeker ve sırasıyla kategoriyi ve girilen 
@@ -234,16 +234,16 @@ def calculate_discount_rate(seat_category,ticket_count):
     have_discount = False
 
     for option in discount_rate_definer:
-        if option[0] == str(seat_category) and int(option[1]) <= ticket_count <= int(option[2]):
-            cost = (int(max_ticket_and_prices[seat_category][1])-(int(max_ticket_and_prices[seat_category][1]) * (int(option[3]) / 100))) * ticket_count
-            print(f"You have %{option[3]} discount! The cost is: ({max_ticket_and_prices[seat_category][1]} - ({max_ticket_and_prices[seat_category][1]} * ({option[3]} / 100))) * {ticket_count} = {cost}")
+        if option[0] == str(seat_category) and int(option[1]) <= ticket_amount <= int(option[2]):
+            cost = (int(max_ticket_and_prices[seat_category][1])-(int(max_ticket_and_prices[seat_category][1]) * (int(option[3]) / 100))) * ticket_amount
+            print(f"You have %{option[3]} discount! The cost is: ({max_ticket_and_prices[seat_category][1]} - ({max_ticket_and_prices[seat_category][1]} * ({option[3]} / 100))) * {ticket_amount} = {cost}")
             total_endorsement[seat_category-1] += cost
             total_endorsement[4] += cost
             have_discount = True
             break
     
     if not have_discount:
-        cost = int(max_ticket_and_prices[seat_category][1]) * ticket_count
+        cost = int(max_ticket_and_prices[seat_category][1]) * ticket_amount
         print(f"The cost is: {cost}")
         total_endorsement[seat_category-1] += cost
         total_endorsement[4] += cost
@@ -282,7 +282,8 @@ def restart(cinema_seats):      # Bütün sistemi ilk değerlerine getirir yani 
         ["-"] * 20,
         ["-"] * 20,
     ]
-    row = [0,0,10,10]
-    column = [5,4,5,4]
-    empty_seats = [100,100,100,100]
-    increse = [-1,-1]
+    row[:] = [0,0,10,10]
+    column[:] = [5,4,5,4]
+    empty_seats[:] = [100,100,100,100]
+    increse[:] = [-1,-1]
+    total_endorsement[:] = [0,0,0,0,0]
