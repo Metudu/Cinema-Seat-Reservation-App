@@ -75,13 +75,13 @@ def make_reservation(cinema_seats):     # Reservasyon yapmak için yazılmış f
                 calculate_discount_rate(seat_category, ticket_amount)
                 discount_calculated = True
             if not ticket_amount:
-                print("You made the reservation successfully!")
+                print("You have made the reservation successfully!")
                 discount_calculated = False
                 break
 
             if not empty_seats[0] or ticket_amount > empty_seats[0]:
                 clear()
-                print("There is no empty seats in this category or your amount of ticket is too high. Please try another one.")
+                print("There is no empty seats in this category or your amount of ticket is too high. Please try another option.")
                 break
 
             if column[0] > 13:
@@ -104,13 +104,13 @@ def make_reservation(cinema_seats):     # Reservasyon yapmak için yazılmış f
                 calculate_discount_rate(seat_category, ticket_amount)
                 discount_calculated = True
             if not ticket_amount:
-                print("You made the reservation successfully!")
+                print("You have made the reservation successfully!")
                 discount_rate_definer = False
                 break
 
             if not empty_seats[2] or ticket_amount > empty_seats[2]:
                 clear()
-                print("There is no empty seats in this category or your amount of ticket is too high. Please try another one.")
+                print("There is no empty seats in this category or your amount of ticket is too high. Please try another option.")
                 break
 
             if column[2] > 13:
@@ -133,12 +133,12 @@ def make_reservation(cinema_seats):     # Reservasyon yapmak için yazılmış f
                 calculate_discount_rate(seat_category, ticket_amount)
                 discount_calculated = True
             if not ticket_amount:
-                print("You made the reservation successfully!")
+                print("You have made the reservation successfully!")
                 discount_calculated = False
                 break
             if not empty_seats[1] or ticket_amount > empty_seats[1]:
                 clear()
-                print("There is no empty seats in this category or your amount of ticket is too high. Please try another one.")
+                print("There is no empty seats in this category or your amount of ticket is too high. Please try another option.")
                 break
 
             if column[1] == 0:
@@ -167,12 +167,12 @@ def make_reservation(cinema_seats):     # Reservasyon yapmak için yazılmış f
                 calculate_discount_rate(seat_category, ticket_amount)
                 discount_calculated = True
             if not ticket_amount:
-                print("You made the reservation successfully!")
+                print("You have made the reservation successfully!")
                 discount_calculated = False
                 break
             if not empty_seats[3] or ticket_amount > empty_seats[3]:
                 clear()
-                print("There is no empty seats in this category or your amount of ticket is too high. Please try another one.")
+                print("There is no empty seats in this category or your amount of ticket is too high. Please try another option.")
                 break
 
             if column[3] == 0:
